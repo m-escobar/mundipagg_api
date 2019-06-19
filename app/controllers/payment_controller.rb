@@ -1,9 +1,9 @@
 class PaymentController < ApplicationController
     def index
         # Configuration parameters and credentials
-        basic_auth_user_name = Base64.encode64('acc_6W1Dm5ef9WcpxDjz') # The username to use with basic authentication
-        basic_auth_password = Base64.encode64('sk_test_ldXjepulPivN39QD') # The password to use with basic authentication
-        
+        basic_auth_user_name = ('pk_test_zD9Jq9IoaSx1JVOk') # The username to use with basic authentication
+        basic_auth_password = ('sk_test_RYwm6wBcMjt387nb') # The password to use with basic authentication
+
 
         client = MundiApi::MundiApiClient.new(
           basic_auth_user_name: basic_auth_user_name,
