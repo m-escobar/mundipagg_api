@@ -1,3 +1,6 @@
+source 'http://localhost:8808'
+gem 'mundi_api', '~> 0.15.1'
+
 source 'https://rubygems.org'
 ruby '2.5.3'
 
@@ -8,7 +11,8 @@ gem 'puma'
 gem 'rails', '5.2.3'
 gem 'redis'
 
-gem 'mundi_api', path: './gem'
+# gem 'date', '~> 2.0'
+# gem 'mundi_api', '~> 0.15.1', path: './gem', require: false
 
 gem 'autoprefixer-rails'
 gem 'font-awesome-sass', '~> 5.6.1'
