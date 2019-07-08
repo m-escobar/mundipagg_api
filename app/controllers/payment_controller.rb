@@ -1,8 +1,8 @@
 class PaymentController < ApplicationController
     def index
         # Configuration parameters and credentials
-        basic_auth_user_name = ('pk_test_zD9Jq9IoaSx1JVOk') # The username to use with basic authentication
-        basic_auth_password = ('sk_test_RYwm6wBcMjt387nb') # The password to use with basic authentication
+        basic_auth_user_name = ENV['Mundi_API'] # The username to use with basic authentication
+        basic_auth_password = ('') # The password to use with basic authentication
 
 
         client = MundiApi::MundiApiClient.new(
@@ -16,14 +16,12 @@ class PaymentController < ApplicationController
         
         request = MundiApi::CreateCustomerRequest.new
         
-        request.name = 'Marcelo Escobar'
-        request.email = 'marceloescobar.s@gmail.com'
-        request.type = 'indivudual'
+        request.name = 'Marcelo Escobar S'
+        request.email = 'marceloescobar@gmail.com'
+        request.type = 'individual'
 
         result = customers_controller.create_customer(request)
         
-
-
 raise
       end
 
