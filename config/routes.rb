@@ -8,9 +8,9 @@ Rails.application.routes.draw do
   get 'pages/index-en', as: 'index-en'
 
   #for testing only
-  get 'create_plans', to: 'testing#create_plans'
-  get 'get_plans', to: 'testing#get_plans'
+  get 'create_plans', to: 'demos#create_plans'
+  get 'get_plans', to: 'demos#get_plans'
   
-  get 'customer', to: 'customer#main'
+  get 'customers', to: 'customers#main'
   get 'pay', to: 'payment#main'
 end
