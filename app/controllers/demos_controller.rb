@@ -1,4 +1,4 @@
-class TestingController < ApplicationController
+class DemosController < ApplicationController
 
 def create_plans
     # Configuration parameters and credentials
