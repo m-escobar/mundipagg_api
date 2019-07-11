@@ -2,7 +2,7 @@ class CustomersController < ApplicationController
   before_action :login, only: [:main]
     
   def initialize
-    @hash =  { "operacao": {
+    @json =  { "operacao": {
                 "tipo": "create"
                 }, 
   
@@ -48,8 +48,10 @@ class CustomersController < ApplicationController
   end
 
   def main
+    temp = @json.to_json
+    @hash = JSON.parse(temp, {:symbolize_names => true})
     unless @hash[:operacao][:tipo].nil? then
-      @to_return = ""
+      @to_return = {}
       case @hash[:operacao][:tipo]
         when "list"
           op_list
@@ -59,14 +61,24 @@ class CustomersController < ApplicationController
           op_update
         when "destroy"
           op_destroy
-        else @to_return = {"error": "Invalid Operation"}
+        else to_return = {"error": "Invalid Operation"}
       end
     else 
-      @to_return = {"error": "Undefined Operation"}
+      to_return = {"error": "Undefined Operation"}
     end
 
-      raise
-    return @to_return
+    if to_return.nil? 
+      to_return = { "response": "ok"}
+      to_return.merge!(@user) unless @user.nil?
+      to_return.merge!(@card) unless @card.nil?
+      to_return.merge!(@address) unless @address.nil?
+      to_return.merge!(Hash[*@products]) unless @products.nil?
+      to_return.merge!(@subscription) unless @subscriptions.nil?
+    end
+
+    json_to_return = to_return.to_json 
+    raise
+    return json_to_return
   end
 
   def op_list
