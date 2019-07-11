@@ -119,13 +119,10 @@ class CustomersController < ApplicationController
 
     #subscription
     unless @hash[:cliente].nil? && @hash[:cartao].nil? && @hash[:produtos].nil? 
-
       subscription = MundiApi::CreateSubscriptionRequest.new
-      subscription = create_subscription(user.id, @plan, @card)
+      subscription = create_subscription(@user, @products, @card)
       @subscription = subscription.nil? ? {"error": "Subscription creation error"} : subscription
-      raise
     end #end subscription
-
   end
    
 private
@@ -212,7 +209,7 @@ private
     return result
   end #end create_plan
 
-  def create_subscription(customer_id, plan, card)
+  def create_subscription(customer, plan, card)
     request =  MundiApi::CreateSubscriptionRequest.new
     # request.plan_id = info[:produtos][0][:plano_id]
     # request.statement_descriptor = 'Cobranca Mensal'
@@ -222,31 +219,31 @@ private
     # request.quantity = 1
     # request.trial_period_days = 7
     # request.boleto_due_days=5
+    # request.minimum_price = 10000
 
-    request.payment_method = "credit_card"
-    request.currency= "BRL"
-    request.interval= "month"
-    request.interval_count= 3
-    request.billing_type= "prepaid"
-    request.installments= 3
-    request.minimum_price= 10000
+    request.payment_method = plan.first.payment_methods.first #"credit_card"
+    request.currency = plan.first.currency #"BRL"
+    request.interval = plan.first.interval #"month"
+    request.interval_count = plan.first.interval_count #3
+    request.billing_type = plan.first.billing_type # "prepaid"
+    request.installments = plan.first.installments.first #3
     request.customer= {
-        "name": "Tony Stark",
-        "email": "tonystark@avengers.com"
+        "name":  customer.name,
+        "email": customer.email
     }
     request.card= {
-        "holder_name": "Tony Stark",
+        "holder_name": card.holder_name,
         "number": "4532464862385322",
-        "exp_month": 1,
-        "exp_year": 26,
-        "cvv": "903"   
+        "exp_month": card.exp_month,
+        "exp_year": card.exp_year,
+        "cvv": "591"
     }
     request.items= [
         {
-          "description": "Bodbuilding",
-          "quantity": 1,
+          "description": plan.first.items.first.name,
+          "quantity": plan.first.items.first.quantity,
           "pricing_scheme": {
-            "price": 18990
+            "price": plan.first.items.first.pricing_scheme.price
           }
         }
     ]
@@ -258,5 +255,4 @@ private
     end
     return result
   end #end create_subscription
-
 end #end class
