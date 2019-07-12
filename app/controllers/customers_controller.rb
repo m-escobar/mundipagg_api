@@ -1,51 +1,58 @@
 class CustomersController < ApplicationController
   before_action :login, only: [:main]
 
-  def initialize
+  def initialize #list
     @json =  { "operacao": {
-                "tipo": "create"
-                }, 
-  
-              "cliente": {
-                # "cliente_id": "cus_5MlXRjBFL4heWXxE",
-                "nome": "Mariana Santos",
-                "email": "marionasantos@gmail.com"
-              },
-              "cartao": {
-                  "numero": "4584441896453869",
-                  "expiracao_mes": 12,
-                  "expiracao_ano": 2019,
-                  "cvv": "591"
-              },
-              "produtos": [
-                  {
-                      "tipo": "plano Teste 123",
-                      "plano_id": "plan_w92xZgaSRPiAWE8N",
-                      "nome": "plano Teste 123",
-                      "descricao": "Assinatura Mensal",
-                      "info_extrato": "Cobranca Mensal",
-                      "metodo_pagamento": "credit_card",
-                      "parcelas": 1,
-                      "moeda": "BRL",
-                      "tipo_intervalo": "month",
-                      "intervalo": 1,
-                      "tipo_cobranca": "prepaid",
-                      "valor": 2540,
-                      "periodo_teste": 7,
-                      "quantidade": 1
-                    }
-                ],
-              "endereco": {
-                    "rua": "Rua Victor",
-                    "numero": "479",
-                    "bairro": "Jardim Maralina",
-                    "cep": "06704-505",
-                    "cidade": "Cotia",
-                    "estado": "SP",
-                    "pais": "BR"
-                  }
-          }
+                  "tipo": "list"
+                }
+              }
   end
+
+  # def initialize #create
+  #   @json =  { "operacao": {
+  #               "tipo": "create"
+  #               }, 
+  
+  #             "cliente": {
+  #               # "cliente_id": "cus_YOUR_CUSTOMER_ID",
+  #               "nome": "Mariana Santos",
+  #               "email": "marionasantos@gmail.com"
+  #             },
+  #             "cartao": {
+  #                 "numero": "4584441896453869",
+  #                 "expiracao_mes": 12,
+  #                 "expiracao_ano": 2019,
+  #                 "cvv": "591"
+  #             },
+  #             "produtos": [
+  #                 {
+  #                     "tipo": "plano Teste 123",
+  #                     "plano_id": "plan_w92xZgaSRPiAWE8N",
+  #                     "nome": "plano Teste 123",
+  #                     "descricao": "Assinatura Mensal",
+  #                     "info_extrato": "Cobranca Mensal",
+  #                     "metodo_pagamento": "credit_card",
+  #                     "parcelas": 1,
+  #                     "moeda": "BRL",
+  #                     "tipo_intervalo": "month",
+  #                     "intervalo": 1,
+  #                     "tipo_cobranca": "prepaid",
+  #                     "valor": 2540,
+  #                     "periodo_teste": 7,
+  #                     "quantidade": 1
+  #                   }
+  #               ],
+  #             "endereco": {
+  #                   "rua": "Rua Victor",
+  #                   "numero": "479",
+  #                   "bairro": "Jardim Maralina",
+  #                   "cep": "06704-505",
+  #                   "cidade": "Cotia",
+  #                   "estado": "SP",
+  #                   "pais": "BR"
+  #                 }
+  #         }
+  # end
 
   def main
     temp = @json.to_json
@@ -82,6 +89,21 @@ class CustomersController < ApplicationController
   end
 
   def op_list
+    #list customer
+    user =  MundiApi::ListCustomersResponse.new
+    user = @customers_controller.get_customers
+
+    if user.nil? then
+       {"error": "User creation error"}
+    else
+      user_hash = {}
+      user.data.each do |u|
+        user_hash << "{ name: #{u.name} },"
+      end
+    end
+
+    raise
+
   end
   
   def op_create
