@@ -1,37 +1,70 @@
 class CustomersController < ApplicationController
   before_action :login, only: [:main]
 
-  def initialize #card update
+
+  def initialize #list 
     @json =  { "operacao": {
-                  "tipo": "update"
+                  "tipo": "list",
+                  "objeto": "card"
                 },
-                "cliente": {
+               "assinatura": {
+                  "assinatura_id": "sub_VdWEX2OCpfAGN32k",
+                },
+               "cliente": {
                   "cliente_id": "cus_wpjEBoBfGktyp3qB"
-                },
-                "cartao": {
-                  "numero": "4000000000000010",
-                  "expiracao_mes": 1,
-                  "expiracao_ano": 2020,
-                  "cvv": "351",
-                  "cartao_id": "card_7yJjqggtZT3aw9gl",
-                  # "endereco_id": "addr_RjnL4ERtjsaBZzoW"
-                },
-                "endereco": {
-                  "rua": "Rua Victor",
-                  "numero": "479",
-                  "bairro": "Jardim Maralina",
-                  "cep": "06704-505",
-                  "cidade": "Cotia",
-                  "estado": "SP",
-                  "pais": "BR"
-                    }
-              }
+                }
+             }
   end
 
-  # def initialize #list
+  # def initialize #destroy subscription
   #   @json =  { "operacao": {
-  #                 "tipo": "list"
+  #                 "tipo": "destroy",
+  #                 "objeto": "subscription"
+  #               },
+  #               "assinatura": {
+  #                 "assinatura_id": "sub_VdWEX2OCpfAGN32k",
   #               }
+  #            }
+  # end
+
+  # def initialize #destroy card
+  #   @json =  { "operacao": {
+  #                 "tipo": "destroy",
+  #                 "objeto": "card"
+  #               },
+  #               "cliente": {
+  #                 "cliente_id": "cus_wpjEBoBfGktyp3qB"
+  #               },
+  #               "cartao": {
+  #                 "cartao_id": "card_7yJjqggtZT3aw9gl",
+  #               }
+  #            }
+  # end
+
+  # def initialize #card update
+  #   @json =  { "operacao": {
+  #                 "tipo": "update"
+  #               },
+  #               "cliente": {
+  #                 "cliente_id": "cus_wpjEBoBfGktyp3qB"
+  #               },
+  #               "cartao": {
+  #                 "numero": "4000000000000010",
+  #                 "expiracao_mes": 1,
+  #                 "expiracao_ano": 2020,
+  #                 "cvv": "351",
+  #                 "cartao_id": "card_7yJjqggtZT3aw9gl",
+  #                 # "endereco_id": "addr_RjnL4ERtjsaBZzoW"
+  #               },
+  #               "endereco": {
+  #                 "rua": "Rua Victor",
+  #                 "numero": "479",
+  #                 "bairro": "Jardim Maralina",
+  #                 "cep": "06704-505",
+  #                 "cidade": "Cotia",
+  #                 "estado": "SP",
+  #                 "pais": "BR"
+  #                   }
   #             }
   # end
 
@@ -104,6 +137,8 @@ class CustomersController < ApplicationController
     if to_return.nil? 
       to_return = { "requested operation": @hash[:operacao][:tipo] }
       to_return.merge!(@error) unless @error.nil?
+      to_return.merge!(@list) unless @list.nil?
+      to_return.merge!(@destroy) unless @destroy.nil?
       to_return.merge!(@user) unless @user.nil?
       to_return.merge!(@card) unless @card.nil?
       to_return.merge!(@address) unless @address.nil?
@@ -112,40 +147,86 @@ class CustomersController < ApplicationController
     end
 
     @json_to_return = JSON.parse(to_return.to_json)
-    # raise
     render :json => @json_to_return
   end
 
   def op_list
     #list customer
-    user =  MundiApi::ListCustomersResponse.new
-    user = @customers_controller.get_customers
+    if @hash[:operacao][:objeto] == "customer" then
+      list = MundiApi::ListCustomersResponse.new
+      list = @customers_controller.get_customers
 
-    if user.nil? then
-       {"error": "User creation error"}
-    else
-      user_hash = {"customers": "list"}
-      user.data.each do |u|
-        hash = { u.name => u.id }
-        user_hash.merge!(hash)
+      if list.nil? then
+        {"error": "No customers listed"}
+      else
+        list_hash = {"customers": "list"}
+        list.data.each do |u|
+          hash = { u.name => u.id }
+          list_hash.merge!(hash)
+        end
+      end
+      #list cards
+    elsif @hash[:operacao][:objeto] == "card" then
+      find_user
+      return unless @error.nil?
+
+      list = MundiApi::ListCardsResponse.new
+      list = @customers_controller.get_cards(@user.id)
+
+      if list.nil? then
+        {"error": "No cards for this customer"}
+      else
+        list_hash = {"customers": "cards"}
+        list.data.each do |u|
+          hash = { u.name => u.id }
+          list_hash.merge!(hash)
+        end
+      end
+      #list subscriptions
+    elsif @hash[:operacao][:objeto] == "subscription" then
+      list = MundiApi::ListSubscriptionsResponse.new
+      list = @subscriptions_controller.get_subscriptions
+
+      if list.nil? then
+        {"error": "No subscriptions for this customer"}
+      else
+        list_hash = {"subscription": "list"}
+        x = 0
+        list.data.each do |l|
+          hash = { l.id => l.code, "customer_id_#{x}": l.customer.id }
+          list_hash.merge!(hash)
+          x += 1
+        end
       end
     end
-    @user = user_hash
+    @list = list_hash
   end
   
   def op_destroy
+    if @hash[:operacao][:objeto] == "cartao" then
+      #find user
+      find_user
+      return unless @error.nil?
+
+      if @hash[:cartao][:cartao_id].nil? then
+        @error = {"error": "Card ID to update not informed"}
+        return
+      end  
+      destroy = destroy_card(@user.id, @hash[:cartao][:cartao_id])
+
+    elsif @hash[:operacao][:objeto] == "subscription"
+      destroy = destroy_subscription(@hash[:assinatura][:assinatura_id])
+    end
     
+    @destroy = destroy.nil? ? {"error": "Operatition error"} : destroy
   end
+
 
   def op_update
     #find user
-    if @hash[:cliente][:cliente_id].nil? then
-      @error = {"error": "Customer ID not informed"}
-      return
-    else
-      user = @customers_controller.get_customer(@hash[:cliente][:cliente_id])
-    end
-    
+    find_user
+    return unless @error.nil? 
+
     #find address
     if @hash[:cartao][:endereco_id].nil? && @hash[:endereco].nil? then
       @error = {"error": "Card Address not informed"}
@@ -182,7 +263,7 @@ class CustomersController < ApplicationController
     end
 
     card =  MundiApi::UpdateCardRequest.new
-    card = update_card(user, @hash[:cartao], address.id)
+    card = update_card(@user, @hash[:cartao], address.id)
 
     @card = card.nil? ? {"error": "Card updating error"} : card
   end
@@ -255,6 +336,19 @@ private
     @plans_controller = client.plans
   end
 
+  def find_user
+    #find user
+    if @hash[:cliente].nil? then
+      @error = {"error": "Customer ID not informed"}
+      return
+    elsif @hash[:cliente][:cliente_id].nil? then
+      @error = {"error": "Customer ID not informed"}
+      return
+    else
+      @user = @customers_controller.get_customer(@hash[:cliente][:cliente_id])
+    end
+  end
+
   def create_user(customer)
     request =  MundiApi::CreateCustomerRequest.new
     request.name = customer[:nome]
@@ -301,6 +395,24 @@ private
     return result
   end
 
+  def destroy_card(customer_id, card_id)
+    begin
+      result = @customers_controller.delete_card(customer_id, card_id)
+    rescue => e
+      result = nil
+    end
+    return result
+  end
+  
+  def destroy_subscription(subscription_id)
+    begin
+      result = @subscriptions_controller.cancel_subscription(subscription_id)
+    rescue => e
+      result = nil
+    end
+    return result
+  end
+  
   def create_address(customer_id, address)
     request =  MundiApi::CreateAddressRequest.new
     request.line_1 = "#{address[:numero]}, #{address[:rua]}, #{address[:bairro]}"
