@@ -1,6 +1,6 @@
 class CustomersController < ApplicationController
   before_action :login, only: [:main]
-    
+
   def initialize
     @json =  { "operacao": {
                 "tipo": "create"
@@ -76,9 +76,9 @@ class CustomersController < ApplicationController
       to_return.merge!(@subscription) unless @subscriptions.nil?
     end
 
-    json_to_return = to_return.to_json 
-    raise
-    return json_to_return
+    @json_to_return = JSON.parse(to_return.to_json)
+    # raise
+    render :json => @json_to_return
   end
 
   def op_list

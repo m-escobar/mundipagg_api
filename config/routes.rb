@@ -11,6 +11,6 @@ Rails.application.routes.draw do
   get 'create_plans', to: 'demos#create_plans'
   get 'get_plans', to: 'demos#get_plans'
   
-  get 'customers', to: 'customers#main'
+  get 'customers', defaults: {format: :json}, to: 'customers#main'
   get 'pay', to: 'payment#main'
 end
