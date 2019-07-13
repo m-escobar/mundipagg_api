@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:m-escobar/mundipagg_ruby-gem.git
+  remote: https://github.com/m-escobar/mundipagg_ruby-gem.git
   revision: 3c8b808152b701d6afd406bc313289d4f26d0f95
   branch: master
   specs:
