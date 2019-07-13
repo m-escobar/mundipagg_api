@@ -1,6 +1,3 @@
-
-gem 'mundi_api', '~> 0.15.1', git: 'https://github.com/m-escobar/mundipagg_ruby-gem.git', branch: 'master'
-
 source 'https://rubygems.org'
 ruby '2.5.3'
 
@@ -17,6 +14,8 @@ gem 'font-awesome-sass', '~> 5.6.1'
 gem 'sassc-rails'
 gem 'uglifier'
 gem 'webpacker', '~> 4.0', '>= 4.0.5'
+
+gem 'mundi_api', '~> 0.15.1', git: 'https://github.com/m-escobar/mundipagg_ruby-gem.git', branch: 'master'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/m-escobar/mundipagg_ruby-gem.git
-  revision: 3c8b808152b701d6afd406bc313289d4f26d0f95
+  revision: 1c233fc7cc08d6b972aca2490455b0a4716f5403
   branch: master
   specs:
     mundi_api (0.15.1)
