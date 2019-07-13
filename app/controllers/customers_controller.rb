@@ -1,141 +1,95 @@
 class CustomersController < ApplicationController
   before_action :login, only: [:main]
 
-
-  def initialize #list 
-    @json =  { "operacao": {
-                  "tipo": "list",
-                  "objeto": "card"
-                },
-               "assinatura": {
-                  "assinatura_id": "sub_VdWEX2OCpfAGN32k",
-                },
-               "cliente": {
-                  "cliente_id": "cus_wpjEBoBfGktyp3qB"
-                }
-             }
-  end
-
-  # def initialize #destroy subscription
-  #   @json =  { "operacao": {
-  #                 "tipo": "destroy",
-  #                 "objeto": "subscription"
-  #               },
-  #               "assinatura": {
-  #                 "assinatura_id": "sub_VdWEX2OCpfAGN32k",
-  #               }
-  #            }
-  # end
-
+  
   # def initialize #destroy card
   #   @json =  { "operacao": {
   #                 "tipo": "destroy",
   #                 "objeto": "card"
   #               },
   #               "cliente": {
-  #                 "cliente_id": "cus_wpjEBoBfGktyp3qB"
+  #                 "cliente_id": "cus_8zYgrjjFRh6BrewJ"
   #               },
   #               "cartao": {
-  #                 "cartao_id": "card_7yJjqggtZT3aw9gl",
+  #                 "cartao_id": "card_7xQgLQlsVcB8DkvM",
   #               }
   #            }
   # end
 
-  # def initialize #card update
-  #   @json =  { "operacao": {
-  #                 "tipo": "update"
-  #               },
-  #               "cliente": {
-  #                 "cliente_id": "cus_wpjEBoBfGktyp3qB"
-  #               },
-  #               "cartao": {
-  #                 "numero": "4000000000000010",
-  #                 "expiracao_mes": 1,
-  #                 "expiracao_ano": 2020,
-  #                 "cvv": "351",
-  #                 "cartao_id": "card_7yJjqggtZT3aw9gl",
-  #                 # "endereco_id": "addr_RjnL4ERtjsaBZzoW"
-  #               },
-  #               "endereco": {
-  #                 "rua": "Rua Victor",
-  #                 "numero": "479",
-  #                 "bairro": "Jardim Maralina",
-  #                 "cep": "06704-505",
-  #                 "cidade": "Cotia",
-  #                 "estado": "SP",
-  #                 "pais": "BR"
-  #                   }
-  #             }
-  # end
+  def initialize #create
+    @json =  { "operacao": {
+                "tipo": "create"
+                }, 
+              "cliente": {
+                # "cliente_id": "cus_2MA0kweCQTxB0lPW",
+                "nome": "Tonyb Starq",
+                "email": "tonyb@avengers.com"
+              },
+              "cartao": {
+                  "numero": "4000000000000010",
+                  "expiracao_mes": 1,
+                  "expiracao_ano": 2020,
+                  "cvv": "351",
+                  # "endereco_id": "addr_dBYmZReMU2UKv1p4"
+                },
+              "produtos": [
+                  {
+                      "tipo": "plano 2020",
+                      "plano_id": "plan_27JVjOvtQBf6xMgm",
+                      "nome": "plano Teste 2020",
+                      "descricao": "Assinatura Bianual",
+                      "info_extrato": "Cobranca Bianual",
+                      "metodo_pagamento": "credit_card",
+                      "parcelas": 1,
+                      "moeda": "BRL",
+                      "tipo_intervalo": "year",
+                      "intervalo": 2,
+                      "tipo_cobranca": "prepaid",
+                      "valor": 254000,
+                      "periodo_teste": 14,
+                      "quantidade": 1
+                    }
+                ],
+              "endereco": {
+                    "rua": "Rua Victor Hugo",
+                    "numero": "479",
+                    "bairro": "Jardim Maralina",
+                    "cep": "06704-505",
+                    "cidade": "Cotia",
+                    "estado": "SP",
+                    "pais": "BR"
+                  }
+          }
+  end
 
-  # def initialize #create
-  #   @json =  { "operacao": {
-  #               "tipo": "create"
-  #               }, 
   
-  #             "cliente": {
-  #               # "cliente_id": "cus_YOUR_CUSTOMER_ID",
-  #               "nome": "Mariana Santos",
-  #               "email": "marionasantos@gmail.com"
-  #             },
-  #             "cartao": {
-  #                 "numero": "4584441896453869",
-  #                 "expiracao_mes": 12,
-  #                 "expiracao_ano": 2019,
-  #                 "cvv": "591"
-  #             },
-  #             "produtos": [
-  #                 {
-  #                     "tipo": "plano Teste 123",
-  #                     "plano_id": "plan_w92xZgaSRPiAWE8N",
-  #                     "nome": "plano Teste 123",
-  #                     "descricao": "Assinatura Mensal",
-  #                     "info_extrato": "Cobranca Mensal",
-  #                     "metodo_pagamento": "credit_card",
-  #                     "parcelas": 1,
-  #                     "moeda": "BRL",
-  #                     "tipo_intervalo": "month",
-  #                     "intervalo": 1,
-  #                     "tipo_cobranca": "prepaid",
-  #                     "valor": 2540,
-  #                     "periodo_teste": 7,
-  #                     "quantidade": 1
-  #                   }
-  #               ],
-  #             "endereco": {
-  #                   "rua": "Rua Victor",
-  #                   "numero": "479",
-  #                   "bairro": "Jardim Maralina",
-  #                   "cep": "06704-505",
-  #                   "cidade": "Cotia",
-  #                   "estado": "SP",
-  #                   "pais": "BR"
-  #                 }
-  #         }
-  # end
-
   def main
     temp = @json.to_json
-    @hash = JSON.parse(temp, {:symbolize_names => true})
-    unless @hash[:operacao][:tipo].nil? then
-      @to_return = {}
-      case @hash[:operacao][:tipo]
-        when "list"
-          op_list
-        when "create"
-          op_create
-        when  "update"
-          op_update
-        when "destroy"
-          op_destroy
-        else to_return = {"error": "Invalid Operation"}
+    hash = JSON.parse(temp, {:symbolize_names => true})
+
+    unless hash.nil?
+      unless hash[:operacao][:tipo].nil? then
+        # to_return = {}
+        case hash[:operacao][:tipo]
+          when "list"
+            op_list(hash)
+          when "create"
+            op_create(hash)
+          when  "update"
+            op_update(hash)
+          when "destroy"
+            op_destroy(hash)
+          else to_return = {"error": "Invalid Operation"}
+        end
+      else 
+        to_return = {"error": "Undefined Operation"}
       end
-    else 
-      to_return = {"error": "Undefined Operation"}
+    else
+      to_return = {"error": "Parameters not informed"}
     end
 
     if to_return.nil? 
-      to_return = { "requested operation": @hash[:operacao][:tipo] }
+      to_return = { "requested operation": hash[:operacao][:tipo] }
       to_return.merge!(@error) unless @error.nil?
       to_return.merge!(@list) unless @list.nil?
       to_return.merge!(@destroy) unless @destroy.nil?
@@ -146,13 +100,14 @@ class CustomersController < ApplicationController
       to_return.merge!(@subscription) unless @subscriptions.nil?
     end
 
-    @json_to_return = JSON.parse(to_return.to_json)
-    render :json => @json_to_return
+    json_to_return = JSON.parse(to_return.to_json)
+    render :json => json_to_return
   end
 
-  def op_list
+private  
+  def op_list(op)
     #list customer
-    if @hash[:operacao][:objeto] == "customer" then
+    if op[:operacao][:objeto] == "customer" then
       list = MundiApi::ListCustomersResponse.new
       list = @customers_controller.get_customers
 
@@ -166,8 +121,8 @@ class CustomersController < ApplicationController
         end
       end
       #list cards
-    elsif @hash[:operacao][:objeto] == "card" then
-      find_user
+    elsif op[:operacao][:objeto] == "card" then
+      find_user(op[:cliente])
       return unless @error.nil?
 
       list = MundiApi::ListCardsResponse.new
@@ -183,7 +138,7 @@ class CustomersController < ApplicationController
         end
       end
       #list subscriptions
-    elsif @hash[:operacao][:objeto] == "subscription" then
+    elsif op[:operacao][:objeto] == "subscription" then
       list = MundiApi::ListSubscriptionsResponse.new
       list = @subscriptions_controller.get_subscriptions
 
@@ -202,107 +157,60 @@ class CustomersController < ApplicationController
     @list = list_hash
   end
   
-  def op_destroy
-    if @hash[:operacao][:objeto] == "cartao" then
-      #find user
-      find_user
-      return unless @error.nil?
-
-      if @hash[:cartao][:cartao_id].nil? then
-        @error = {"error": "Card ID to update not informed"}
-        return
-      end  
-      destroy = destroy_card(@user.id, @hash[:cartao][:cartao_id])
-
-    elsif @hash[:operacao][:objeto] == "subscription"
-      destroy = destroy_subscription(@hash[:assinatura][:assinatura_id])
-    end
-    
-    @destroy = destroy.nil? ? {"error": "Operatition error"} : destroy
-  end
-
-
-  def op_update
-    #find user
-    find_user
-    return unless @error.nil? 
-
-    #find address
-    if @hash[:cartao][:endereco_id].nil? && @hash[:endereco].nil? then
-      @error = {"error": "Card Address not informed"}
-      return
-    elsif !@hash[:cartao][:endereco_id].nil?
-      address = @customers_controller.get_addresses(user.id, 1, 1)
-    elsif !@hash[:endereco].nil?
-      address = create_address(user.id, @hash[:endereco])
-    else
-        @error = {"error": "Card Address ID not informed"}
-        return
-    end
-
-    #card update
-    if @hash[:cartao].nil? then
-      @error = {"error": "Card info not provided"}
-      return
-    end
-    if @hash[:cartao][:numero].nil? then
-      @error = {"error": "Card number not informed"}
-      return
-    end
-    if @hash[:cartao][:expiracao_mes].nil? then
-      @error = {"error": "Card month exp not informed"}
-      return
-    end
-    if @hash[:cartao][:expiracao_ano].nil? then
-      @error = {"error": "Card year exp not informed"}
-      return
-    end
-    if @hash[:cartao][:cartao_id].nil? then
-      @error = {"error": "Card ID to update not informed"}
-      return
-    end
-
-    card =  MundiApi::UpdateCardRequest.new
-    card = update_card(@user, @hash[:cartao], address.id)
-
-    @card = card.nil? ? {"error": "Card updating error"} : card
-  end
-
-  def op_create
+  def op_create(op)
     #customer
     user =  MundiApi::CreateCustomerRequest.new
-    unless @hash[:cliente].nil?
-      unless @hash[:cliente][:cliente_id].nil?
-        user = @customers_controller.get_customer(@hash[:cliente][:cliente_id])
+    unless op[:cliente].nil?
+      unless op[:cliente][:cliente_id].nil?
+        user = @customers_controller.get_customer(op[:cliente][:cliente_id])
       else
-        user = create_user(@hash[:cliente])
+        user = create_user(op[:cliente])
       end
       
       @user = user.nil? ? {"error": "User creation error"} : user
     end #end customer
 
     #cartao
-    unless @hash[:cartao].nil? 
-      card =  MundiApi::CreateCardRequest.new
-      card = create_card(@user.id, @hash[:cartao])
-      @card = card.nil? ? {"error": "Card creation error"} : card
+    unless op[:cartao].nil?
+      if @user.nil?
+        find_user(op[:cliente])
+        return unless @error.nil? 
+      end
+      if op[:cartao][:endereco_id].nil?
+        unless op[:endereco].nil?
+          address = create_address(@user.id, op[:endereco])
+          return unless @error.nil?
+          address_id = address.id
+        end
+      else
+        address_id = op[:cartao][:endereco_id]
+      end
+
+      card = MundiApi::CreateCardRequest.new
+      card = create_card(@user, op[:cartao], address_id)
+      if card.nil? then
+        @error =  {"error": "Card creation error"}
+      else
+        @card = card
+      end
     end #end cartao
 
     #address
     address =  MundiApi::CreateCustomerRequest.new
-      unless @hash[:endereco].nil?
-        unless @user.nil?
-          address = create_address(@user.id, @hash[:endereco])
-        else
-            return {"error": "Undefined Customer"}
-        end
+    unless op[:endereco].nil?
+      unless @user.nil?
+        address = create_address(@user.id, op[:endereco])
+      else
+        @error = {"error": "Undefined Customer"}
+        return
+      end
       @address = address.nil? ? {"error": "Address creation error"} : address
     end #end address
 
     #product
-    unless @hash[:produtos].nil? 
+    unless op[:produtos].nil? 
       @products = []
-      @hash[:produtos].each do |produto|
+      op[:produtos].each do |produto|
         product = MundiApi::CreatePlanRequest.new
         product = create_plan(produto)
         if product.nil? 
@@ -314,14 +222,88 @@ class CustomersController < ApplicationController
     end #end product
 
     #subscription
-    unless @hash[:cliente].nil? && @hash[:cartao].nil? && @hash[:produtos].nil? 
-      subscription = MundiApi::CreateSubscriptionRequest.new
-      subscription = create_subscription(@user, @products, @card)
-      @subscription = subscription.nil? ? {"error": "Subscription creation error"} : subscription
+    unless op[:cliente].nil? || op[:cartao].nil? || op[:produtos].nil? 
+      unless @user.nil? || @products.nil? || @card.nil?
+        subscription = MundiApi::CreateSubscriptionRequest.new
+        subscription = create_subscription(@user, @products, @card)
+        if subscription.nil? then
+          @error = { "error": "Subscription creation error" }
+        else 
+          @subscription = subscription
+        end
+      end
     end #end subscription
-  end
-   
-private
+  end #end op_create
+
+  def op_update(op)
+    find_user(op[:cliente])
+    return unless @error.nil? 
+
+    #find address
+    if op[:cartao].nil? then
+      @error = {"error": "Card not informed"}
+      return
+    elsif op[:cartao][:endereco_id].nil? && op[:endereco].nil? then
+      @error = {"error": "Card Address not informed"}
+      return
+    elsif !op[:cartao][:endereco_id].nil?
+      address = @customers_controller.get_addresses(@user.id)
+    elsif !op[:endereco].nil?
+      address = create_address(@user.id, op[:endereco])
+      if address.nil? then
+        @error = { "error": "Address parameters missing"  }
+        return if address.nil?
+      end
+    else
+        @error = {"error": "Card Address ID not informed"}
+        return
+    end
+
+    #card update
+    if op[:cartao].nil? then
+      @error = {"error": "Card info not provided"}
+      return
+    end
+    if op[:cartao][:expiracao_mes].nil? then
+      @error = {"error": "Card month exp date not informed"}
+      return
+    end
+    if op[:cartao][:expiracao_ano].nil? then
+      @error = {"error": "Card year exp date not informed"}
+      return
+    end
+    if op[:cartao][:cartao_id].nil? then
+      @error = {"error": "Card ID to update not informed"}
+      return
+    end
+
+    card =  MundiApi::UpdateCardRequest.new
+    card = update_card(@user, op[:cartao], address.id)
+
+    @card = card.nil? ? {"error": "Card updating error"} : card
+  end #end op_update
+
+  def op_destroy(op)
+    if op[:operacao][:objeto] == "card" then
+      find_user(op[:cliente])
+      return unless @error.nil?
+      
+      if op[:cartao].nil? then
+        @error = {"error": "Card to destroy not informed"}
+        return
+      elsif op[:cartao][:cartao_id].nil? then
+        @error = {"error": "Card ID to destroy not informed"}
+        return
+      end
+      destroy = destroy_card(@user.id, op[:cartao][:cartao_id])
+
+    elsif op[:operacao][:objeto] == "subscription"
+      destroy = destroy_subscription(op[:assinatura][:assinatura_id])
+    end
+    
+    @destroy = destroy.nil? ? {"error": "Destroy operation error"} : destroy
+  end #end op_destroy
+
   def login
     # Configuration parameters and credentials
     basic_auth_user_name = ENV['Mundi_API'] # The username to use with basic authentication
@@ -336,18 +318,22 @@ private
     @plans_controller = client.plans
   end
 
-  def find_user
+  def find_user(customer)
     #find user
-    if @hash[:cliente].nil? then
-      @error = {"error": "Customer ID not informed"}
+    if customer.nil? then
+      @error = {"error": "Customer not informed"}
       return
-    elsif @hash[:cliente][:cliente_id].nil? then
+    elsif customer[:cliente_id].nil? then
       @error = {"error": "Customer ID not informed"}
       return
     else
-      @user = @customers_controller.get_customer(@hash[:cliente][:cliente_id])
+      @user = @customers_controller.get_customer(customer[:cliente_id])
     end
   end
+
+  # def find_address(address_id)
+  #   address = @customers_controller.get_addresses(@user.id)
+  # end
 
   def create_user(customer)
     request =  MundiApi::CreateCustomerRequest.new
@@ -363,19 +349,29 @@ private
     return result
   end
   
-  def create_card(customer_id, card)
+  def create_card(user, card, address_id)
     request =  MundiApi::CreateCardRequest.new
-    request.holder_name = !card[:nome].nil? ? card[:nome] : @hash[:cliente][:nome]
+    request.holder_name = !card[:nome].nil? ? card[:nome] : user.name
     request.number = card[:numero]
     request.exp_month = card[:expiracao_mes]
     request.exp_year = card[:expiracao_ano]
     request.cvv = card[:cvv]
+    request.billing_address_id = address_id
+    # request.billing_address = {
+    #     "line_1": "375, Av. General Osorio, Centro",
+    #     "line_2": "7th Floor",
+    #     "zip_code": "220000111",
+    #     "city": "Rio de Janeiro",
+    #     "state": "RJ",
+    #     "country": "BR"
+    # }
     
     begin
-      result = @customers_controller.create_card(customer_id, request)
+      result = @customers_controller.create_card(user.id, request)
     rescue => e
       result = nil
     end
+    
     return result
   end
 
@@ -403,16 +399,7 @@ private
     end
     return result
   end
-  
-  def destroy_subscription(subscription_id)
-    begin
-      result = @subscriptions_controller.cancel_subscription(subscription_id)
-    rescue => e
-      result = nil
-    end
-    return result
-  end
-  
+    
   def create_address(customer_id, address)
     request =  MundiApi::CreateAddressRequest.new
     request.line_1 = "#{address[:numero]}, #{address[:rua]}, #{address[:bairro]}"
@@ -498,4 +485,13 @@ private
     end
     return result
   end #end create_subscription
+
+  def destroy_subscription(subscription_id)
+    begin
+      result = @subscriptions_controller.cancel_subscription(subscription_id)
+    rescue => e
+      result = nil
+    end
+    return result
+  end #end destroy subscription
 end #end class
