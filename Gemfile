@@ -1,7 +1,7 @@
 # source 'http://localhost:8808'
 # gem 'mundi_api', '~> 0.15.1'
 
-gem 'mundi_api', '~> 0.15.1', git: 'git@github.com:m-escobar/mundipagg_ruby-gem.git', branch: 'master'
+gem 'mundi_api', '~> 0.15.1', git: 'https://github.com/m-escobar/mundipagg_ruby-gem.git', branch: 'master'
 
 source 'https://rubygems.org'
 ruby '2.5.3'
