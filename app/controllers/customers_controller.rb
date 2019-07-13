@@ -22,8 +22,8 @@ class CustomersController < ApplicationController
                 }, 
               "cliente": {
                 # "cliente_id": "cus_2MA0kweCQTxB0lPW",
-                "nome": "Tonyb Starq",
-                "email": "tonyb@avengers.com"
+                "nome": "Tonyc Starq",
+                "email": "tonyC@avengers.com"
               },
               "cartao": {
                   "numero": "4000000000000010",
@@ -34,9 +34,9 @@ class CustomersController < ApplicationController
                 },
               "produtos": [
                   {
-                      "tipo": "plano 2020",
+                      "tipo": "plano 2021",
                       "plano_id": "plan_27JVjOvtQBf6xMgm",
-                      "nome": "plano Teste 2020",
+                      "nome": "plano Teste 2021",
                       "descricao": "Assinatura Bianual",
                       "info_extrato": "Cobranca Bianual",
                       "metodo_pagamento": "credit_card",
@@ -51,7 +51,7 @@ class CustomersController < ApplicationController
                     }
                 ],
               "endereco": {
-                    "rua": "Rua Victor Hugo",
+                    "rua": "Rua Amaralina",
                     "numero": "479",
                     "bairro": "Jardim Maralina",
                     "cep": "06704-505",
@@ -61,7 +61,6 @@ class CustomersController < ApplicationController
                   }
           }
   end
-
   
   def main
     temp = @json.to_json
@@ -331,10 +330,6 @@ private
     end
   end
 
-  # def find_address(address_id)
-  #   address = @customers_controller.get_addresses(@user.id)
-  # end
-
   def create_user(customer)
     request =  MundiApi::CreateCustomerRequest.new
     request.name = customer[:nome]
@@ -357,14 +352,6 @@ private
     request.exp_year = card[:expiracao_ano]
     request.cvv = card[:cvv]
     request.billing_address_id = address_id
-    # request.billing_address = {
-    #     "line_1": "375, Av. General Osorio, Centro",
-    #     "line_2": "7th Floor",
-    #     "zip_code": "220000111",
-    #     "city": "Rio de Janeiro",
-    #     "state": "RJ",
-    #     "country": "BR"
-    # }
     
     begin
       result = @customers_controller.create_card(user.id, request)
