@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_action :login, only: [:main]
+  # before_action :login, only: [:main]
 
   
   def initialize #list 
@@ -63,6 +63,7 @@ class CustomersController < ApplicationController
     unless hash.nil?
       unless hash[:operacao][:tipo].nil? then
         @api_key = hash[:operacao][:api_key]
+        login
         case hash[:operacao][:tipo]
           when "list"
             op_list(hash)
@@ -300,15 +301,15 @@ private
 
   def login
     # Configuration parameters and credentials
-    
     if @api_key.nil?
-    #To be used locally with .env file or at Heroku (or other) with 
-    #secret_key configured at Settings#Config_Vars
+      #To be used locally with .env file or at Heroku (or other) with 
+      #secret_key configured at Settings#Config_Vars
       basic_auth_user_name = ENV['Mundi_API'] # The username to use with basic authentication
     else
       #To be used online getting Secret_key from Json
-      basic_auth_password = (@api_key) # The password to use with basic authentication
+      basic_auth_user_name = (@api_key)
     end
+      basic_auth_password = '' # The password to use with basic authentication
 
     client = MundiApi::MundiApiClient.new(
       basic_auth_user_name: basic_auth_user_name,
