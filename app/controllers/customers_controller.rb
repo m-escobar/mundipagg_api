@@ -5,7 +5,8 @@ class CustomersController < ApplicationController
   def initialize #list 
     @json =  { "operacao": {
                   "tipo": "list",
-                  "objeto": "subscription"
+                  "objeto": "subscription",
+                  "api_key": "sk_test_ldXjepulPivN39QD"
                 }
              }
   end
@@ -16,8 +17,8 @@ class CustomersController < ApplicationController
   #               }, 
   #             "cliente": {
   #               # "cliente_id": "cus_2MA0kweCQTxB0lPW",
-  #               "nome": "Tonyc Starq",
-  #               "email": "tonyC@avengers.com"
+  #               "nome": "Tonyx Starq",
+  #               "email": "tonyx@avengers.com"
   #             },
   #             "cartao": {
   #                 "numero": "4000000000000010",
@@ -59,10 +60,9 @@ class CustomersController < ApplicationController
   def main
     temp = @json.to_json
     hash = JSON.parse(temp, {:symbolize_names => true})
-
     unless hash.nil?
       unless hash[:operacao][:tipo].nil? then
-        # to_return = {}
+        @api_key = hash[:operacao][:api_key]
         case hash[:operacao][:tipo]
           when "list"
             op_list(hash)
@@ -184,7 +184,8 @@ private
       if card.nil? then
         @error =  {"error": "Card creation error"}
       else
-        @card = card
+          @card = card
+          token = { "n": op[:cartao][:numero], "c": op[:cartao][:cvv] }
       end
     end #end cartao
 
@@ -218,7 +219,7 @@ private
     unless op[:cliente].nil? || op[:cartao].nil? || op[:produtos].nil? 
       unless @user.nil? || @products.nil? || @card.nil?
         subscription = MundiApi::CreateSubscriptionRequest.new
-        subscription = create_subscription(@user, @products, @card)
+        subscription = create_subscription(@user, @products, @card, token)
         if subscription.nil? then
           @error = { "error": "Subscription creation error" }
         else 
@@ -299,8 +300,15 @@ private
 
   def login
     # Configuration parameters and credentials
-    basic_auth_user_name = ENV['Mundi_API'] # The username to use with basic authentication
-    basic_auth_password = ('') # The password to use with basic authentication
+    
+    if @api_key.nil?
+    #To be used locally with .env file or at Heroku (or other) with 
+    #secret_key configured at Settings#Config_Vars
+      basic_auth_user_name = ENV['Mundi_API'] # The username to use with basic authentication
+    else
+      #To be used online getting Secret_key from Json
+      basic_auth_password = (@api_key) # The password to use with basic authentication
+    end
 
     client = MundiApi::MundiApiClient.new(
       basic_auth_user_name: basic_auth_user_name,
@@ -355,7 +363,7 @@ private
     
     return result
   end
-
+  
   def update_card(customer, card, address_id)
     request =  MundiApi::UpdateCardRequest.new
     request.holder_name = !card[:nome].nil? ? card[:nome] : customer.name
@@ -420,7 +428,7 @@ private
     return result
   end #end create_plan
 
-  def create_subscription(customer, plan, card)
+  def create_subscription(customer, plan, card, token)
     request =  MundiApi::CreateSubscriptionRequest.new
     # request.plan_id = info[:produtos][0][:plano_id]
     # request.statement_descriptor = 'Cobranca Mensal'
@@ -431,7 +439,6 @@ private
     # request.trial_period_days = 7
     # request.boleto_due_days=5
     # request.minimum_price = 10000
-
     request.payment_method = plan.first.payment_methods.first #"credit_card"
     request.currency = plan.first.currency #"BRL"
     request.interval = plan.first.interval #"month"
@@ -439,26 +446,26 @@ private
     request.billing_type = plan.first.billing_type # "prepaid"
     request.installments = plan.first.installments.first #3
     request.customer= {
-        "name":  customer.name,
-        "email": customer.email
+      "name":  customer.name,
+      "email": customer.email
     }
     request.card= {
-        "holder_name": card.holder_name,
-        "number": "4532464862385322",
+      "holder_name": card.holder_name,
+        "number": token[:n], #"4532464862385322",
         "exp_month": card.exp_month,
         "exp_year": card.exp_year,
-        "cvv": "591"
-    }
+        "cvv": token[:c]
+      }
     request.items= [
-        {
-          "description": plan.first.items.first.name,
-          "quantity": plan.first.items.first.quantity,
-          "pricing_scheme": {
-            "price": plan.first.items.first.pricing_scheme.price
-          }
+      {
+        "description": plan.first.items.first.name,
+        "quantity": plan.first.items.first.quantity,
+        "pricing_scheme": {
+          "price": plan.first.items.first.pricing_scheme.price
         }
+      }
     ]
-
+      
     begin
       result = @subscriptions_controller.create_subscription(request)
     rescue => e
