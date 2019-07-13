@@ -2,66 +2,59 @@ class CustomersController < ApplicationController
   before_action :login, only: [:main]
 
   
-  # def initialize #destroy card
-  #   @json =  { "operacao": {
-  #                 "tipo": "destroy",
-  #                 "objeto": "card"
-  #               },
-  #               "cliente": {
-  #                 "cliente_id": "cus_8zYgrjjFRh6BrewJ"
-  #               },
-  #               "cartao": {
-  #                 "cartao_id": "card_7xQgLQlsVcB8DkvM",
-  #               }
-  #            }
-  # end
-
-  def initialize #create
+  def initialize #list 
     @json =  { "operacao": {
-                "tipo": "create"
-                }, 
-              "cliente": {
-                # "cliente_id": "cus_2MA0kweCQTxB0lPW",
-                "nome": "Tonyb Starq",
-                "email": "tonyb@avengers.com"
-              },
-              "cartao": {
-                  "numero": "4000000000000010",
-                  "expiracao_mes": 1,
-                  "expiracao_ano": 2020,
-                  "cvv": "351",
-                  # "endereco_id": "addr_dBYmZReMU2UKv1p4"
-                },
-              "produtos": [
-                  {
-                      "tipo": "plano 2020",
-                      "plano_id": "plan_27JVjOvtQBf6xMgm",
-                      "nome": "plano Teste 2020",
-                      "descricao": "Assinatura Bianual",
-                      "info_extrato": "Cobranca Bianual",
-                      "metodo_pagamento": "credit_card",
-                      "parcelas": 1,
-                      "moeda": "BRL",
-                      "tipo_intervalo": "year",
-                      "intervalo": 2,
-                      "tipo_cobranca": "prepaid",
-                      "valor": 254000,
-                      "periodo_teste": 14,
-                      "quantidade": 1
-                    }
-                ],
-              "endereco": {
-                    "rua": "Rua Victor Hugo",
-                    "numero": "479",
-                    "bairro": "Jardim Maralina",
-                    "cep": "06704-505",
-                    "cidade": "Cotia",
-                    "estado": "SP",
-                    "pais": "BR"
-                  }
-          }
+                  "tipo": "list",
+                  "objeto": "subscription"
+                }
+             }
   end
 
+  # def initialize #create
+  #   @json =  { "operacao": {
+  #               "tipo": "create"
+  #               }, 
+  #             "cliente": {
+  #               # "cliente_id": "cus_2MA0kweCQTxB0lPW",
+  #               "nome": "Tonyc Starq",
+  #               "email": "tonyC@avengers.com"
+  #             },
+  #             "cartao": {
+  #                 "numero": "4000000000000010",
+  #                 "expiracao_mes": 1,
+  #                 "expiracao_ano": 2020,
+  #                 "cvv": "351",
+  #                 # "endereco_id": "addr_dBYmZReMU2UKv1p4"
+  #               },
+  #             "produtos": [
+  #                 {
+  #                     "tipo": "plano 2021",
+  #                     "plano_id": "plan_27JVjOvtQBf6xMgm",
+  #                     "nome": "plano Teste 2021",
+  #                     "descricao": "Assinatura Bianual",
+  #                     "info_extrato": "Cobranca Bianual",
+  #                     "metodo_pagamento": "credit_card",
+  #                     "parcelas": 1,
+  #                     "moeda": "BRL",
+  #                     "tipo_intervalo": "year",
+  #                     "intervalo": 2,
+  #                     "tipo_cobranca": "prepaid",
+  #                     "valor": 254000,
+  #                     "periodo_teste": 14,
+  #                     "quantidade": 1
+  #                   }
+  #               ],
+  #             "endereco": {
+  #                   "rua": "Rua Amaralina",
+  #                   "numero": "479",
+  #                   "bairro": "Jardim Maralina",
+  #                   "cep": "06704-505",
+  #                   "cidade": "Cotia",
+  #                   "estado": "SP",
+  #                   "pais": "BR"
+  #                 }
+  #         }
+  # end
   
   def main
     temp = @json.to_json
@@ -331,10 +324,6 @@ private
     end
   end
 
-  # def find_address(address_id)
-  #   address = @customers_controller.get_addresses(@user.id)
-  # end
-
   def create_user(customer)
     request =  MundiApi::CreateCustomerRequest.new
     request.name = customer[:nome]
@@ -357,14 +346,6 @@ private
     request.exp_year = card[:expiracao_ano]
     request.cvv = card[:cvv]
     request.billing_address_id = address_id
-    # request.billing_address = {
-    #     "line_1": "375, Av. General Osorio, Centro",
-    #     "line_2": "7th Floor",
-    #     "zip_code": "220000111",
-    #     "city": "Rio de Janeiro",
-    #     "state": "RJ",
-    #     "country": "BR"
-    # }
     
     begin
       result = @customers_controller.create_card(user.id, request)
