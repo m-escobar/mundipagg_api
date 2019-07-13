@@ -6,7 +6,7 @@ class CustomersController < ApplicationController
     @json =  { "operacao": {
                   "tipo": "list",
                   "objeto": "subscription",
-                  "api_key": "sk_test_ldXjepulPivN39QD"
+                  # "api_key": "sk_Your_secret key"
                 }
              }
   end
