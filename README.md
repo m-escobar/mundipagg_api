@@ -15,19 +15,26 @@ Preparação:
 - Para listar os planos existentes
   mundipagg_api.herokuapp.com/get_plans?Secret_Teste_key
 
-- Endpoint para chamada da API: mundipagg_api.herokuapp.com/customers
+- Endpoint para chamada da API:
+  mundipagg_api.herokuapp.com/customers
 
 
 2 - Uso através do Ruby on Rails.
 
 Preparação (considerando que você já possui o Ruby instalado):  
   - Clone este repositório para sua máquina
+    https://github.com/m-escobar/mundipagg_api.git
   - cd Pasta_do_repositorio
   - 'bundle install'
-  - após executar o 'bundle' com sucesso pode encerrar o gem server
-
-  - Edit o arquivo .env e inclua o texto abaixo:
+  
+  Você precisará da sua Secret_key fornecida pelo MundiPagg para executar as chamadas da API, para isso você pode criar um arquivo .env com a chave abaixo ou passar a informação pela chamada do json.
+  - Crie o arquivo .env na pasta do repositório e inclua o texto abaixo:
     Mundi_API = "Your_Secret_test_Key_from_mundipagg"
 
-  - Execute 'Rails s' e acesse pelo browser localhost:3000 e veja o index da API
+  Caso esteja rodando na aws, heroku, etc configure a secret_key como:
+  key = Mundi_API
+  value = Your_Secret_test_Key_from_mundipagg
+
+
+ - Execute 'Rails s' e acesse pelo browser localhost:3000 e veja o index da API ou faça uma chamada ao endpoint
   
