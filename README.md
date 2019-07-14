@@ -15,20 +15,12 @@ Preparação:
 - Para listar os planos existentes
   mundipagg_api.herokuapp.com/get_plans?Secret_Teste_key
 
-- Abaixo a lista de endpoints para chamada da API
-  mundipagg_api.herokuapp.com/
+- Endpoint para chamada da API: mundipagg_api.herokuapp.com/customers
 
 
 2 - Uso através do Ruby on Rails.
 
-Preparação (considerando que você já possui o Ruby instalado):
-- Faça o download da SDK da MundiPagg e descompacte o arquivo - https://github.com/mundipagg/MundiAPI-RUBY
-- Execute os passos abaixo:
-  - cd Gem_Source_Code_folder
-  - gem build mundi_api.gemspec
-  - gem install mundi_api-0.15.1.gem
-  - gem s (irá criar um gem server para instalação desta gem)
-  
+Preparação (considerando que você já possui o Ruby instalado):  
   - Clone este repositório para sua máquina
   - cd Pasta_do_repositorio
   - 'bundle install'
