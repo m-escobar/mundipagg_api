@@ -23,7 +23,7 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
 - Execute 'Rails s' e acesse pelo browser localhost:3000 e veja o index da API ou faça uma chamada ao endpoint:
  localhost:3000/customers passando os parâmetros no body da chamada.
  
-- Veja exemplos de chamadas no arquivo sample/initializers_to_teste.txt, aqui você encontrará os parâmetros necessários para cada tipo de operação.
+- Veja exemplos de chamadas no arquivo sample/initializers_to_test.txt, aqui você encontrará os parâmetros necessários para cada tipo de operação.
  
 - Todas as operações seguem o que está documentado em https://docs.mundipagg.com/reference
 
