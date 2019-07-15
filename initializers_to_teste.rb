@@ -1,4 +1,13 @@
-  def initialize #list 
+def initialize #list 
+  @json =  { "operacao": {
+                "tipo": "list",
+                "objeto": "subscription",
+                # "api_key": "sk_Your_secret key"
+              }
+           }
+end
+
+def initialize #list 
     @json =  { "operacao": {
                   "tipo": "list",
                   "objeto": "subscription"

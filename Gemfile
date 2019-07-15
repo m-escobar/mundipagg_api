@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.5.3'
+ruby '2.5.5'
 
 gem 'bootsnap', require: false
-# gem 'activesupport', '~> 5.1', '>= 5.2.3'
+gem 'bundler', '~> 2.0', '>= 2.0.2'
 gem 'jbuilder', '~> 2.0'
 gem 'pg', '~> 0.21'
 gem 'puma'

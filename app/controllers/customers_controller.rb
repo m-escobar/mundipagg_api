@@ -1,65 +1,24 @@
 class CustomersController < ApplicationController
   # before_action :login, only: [:main]
+  skip_before_action :verify_authenticity_token
 
-  
-  def initialize #list 
-    @json =  { "operacao": {
-                  "tipo": "list",
-                  "objeto": "subscription",
-                  # "api_key": "sk_Your_secret key"
-                }
-             }
+  protect_from_forgery :except => [:main]
+
+  def main
+    o_return = {
+      "body": {
+        "error": "Parameters not informed"
+      }
+    }
+    render :json => o_return
   end
 
-  # def initialize #create
-  #   @json =  { "operacao": {
-  #               "tipo": "create"
-  #               }, 
-  #             "cliente": {
-  #               # "cliente_id": "cus_2MA0kweCQTxB0lPW",
-  #               "nome": "Tonyx Starq",
-  #               "email": "tonyx@avengers.com"
-  #             },
-  #             "cartao": {
-  #                 "numero": "4000000000000010",
-  #                 "expiracao_mes": 1,
-  #                 "expiracao_ano": 2020,
-  #                 "cvv": "351",
-  #                 # "endereco_id": "addr_dBYmZReMU2UKv1p4"
-  #               },
-  #             "produtos": [
-  #                 {
-  #                     "tipo": "plano 2021",
-  #                     "plano_id": "plan_27JVjOvtQBf6xMgm",
-  #                     "nome": "plano Teste 2021",
-  #                     "descricao": "Assinatura Bianual",
-  #                     "info_extrato": "Cobranca Bianual",
-  #                     "metodo_pagamento": "credit_card",
-  #                     "parcelas": 1,
-  #                     "moeda": "BRL",
-  #                     "tipo_intervalo": "year",
-  #                     "intervalo": 2,
-  #                     "tipo_cobranca": "prepaid",
-  #                     "valor": 254000,
-  #                     "periodo_teste": 14,
-  #                     "quantidade": 1
-  #                   }
-  #               ],
-  #             "endereco": {
-  #                   "rua": "Rua Amaralina",
-  #                   "numero": "479",
-  #                   "bairro": "Jardim Maralina",
-  #                   "cep": "06704-505",
-  #                   "cidade": "Cotia",
-  #                   "estado": "SP",
-  #                   "pais": "BR"
-  #                 }
-  #         }
-  # end
-  
-  def main
+  def jmain
     temp = @json.to_json
     hash = JSON.parse(temp, {:symbolize_names => true})
+    puts "hash=#{hash}"
+    puts "params=#{params}"
+
     unless hash.nil?
       unless hash[:operacao][:tipo].nil? then
         @api_key = hash[:operacao][:api_key]
@@ -79,8 +38,18 @@ class CustomersController < ApplicationController
         to_return = {"error": "Undefined Operation"}
       end
     else
-      to_return = {"error": "Parameters not informed"}
+      to_return = '{
+        "header": {
+          "Access-Control-Allow-Origin": *
+        },
+        "body": {
+          "error": "Parameters not informed"
+        }
+      }'
+
     end
+    
+
 
     if to_return.nil? 
       to_return = { "requested operation": hash[:operacao][:tipo] }
