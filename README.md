@@ -24,10 +24,39 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
  localhost:3000/customers passando os parâmetros no body da chamada.
  
 - Veja exemplos de chamadas no aquivo sample/initializers_to_teste.txt
-  
+ 
+- Todas as operações seguem o que está documentado em https://docs.mundipagg.com/reference
+
+- Para acessar sua Secret_test_api faça login em https://id.mundipagg.com/signin, selecione 'Ir para o modo de teste', depois no menu 'Conta' -> 'Configurações -> 'Chaves' - aqui você enontrará suas api_keys('chaves').
+
 - Você também pode chamar o arquivo sample/mundipagg.html para executar as chamadas. Neste caso primeiro edite o arquivo sample/script.js, remova o comentário e adicione sua Secret_test_key da mundipagg.
+
+- Todas as chamadas devem começar com o corpo abaixo:
   
-  Segue a lista de possíveis parâmetros:
+  operacao: {
+      tipo: 'list',
+      objeto: 'customer',
+      api_key: 'sk_test_Your_Secret_Key' 
+    }
   
+  tipo: define o tipo da operação -> list, create, update, destroy
+  objeto: define onde será realizada a operação, nem todas as funções foram implementadas, uma vez que isto é apenas um MVP.
   
+  list -> customer, card, subscription
+  create -> customer, card, address, product, subscription
+  update -> card
+  destroy -> card
   
+  A operação abaixo por exemplo, irá listar os cartões do cliente:
+
+  "operacao": {
+              "tipo": "list",
+              "objeto": "card"
+              },
+              "cliente": {
+                "cliente_id": "cus_wpjEBoBfGktyp3qB"
+              }
+          
+ Card -> Update - pode atualizar dados do cartão, mas não permite mudar o número do cartão e nem o CVV. Caso isso seja necessário crie um cartão novo e destrua o antigo.
+ 
+ 
