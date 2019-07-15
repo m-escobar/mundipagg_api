@@ -1,24 +1,20 @@
 class CustomersController < ApplicationController
-  # before_action :login, only: [:main]
   skip_before_action :verify_authenticity_token
 
-  protect_from_forgery :except => [:main]
+  # def main
+  #   p = params
+  #   o_return = {
+  #     "body": {
+  #       "error": "Parameters not informed"
+  #     }
+  #   }
+  #   render :json => params #o_return
+  # end
 
   def main
-    p = params
-    o_return = {
-      "body": {
-        "error": "Parameters not informed"
-      }
-    }
-    render :json => params #o_return
-  end
-
-  def jmain
-    temp = @json.to_json
-    hash = JSON.parse(temp, {:symbolize_names => true})
-    puts "hash=#{hash}"
-    puts "params=#{params}"
+    # temp = params
+    # hash = JSON.parse(temp, {:symbolize_names => true})
+    hash = params
 
     unless hash.nil?
       unless hash[:operacao][:tipo].nil? then
