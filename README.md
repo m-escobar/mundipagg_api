@@ -23,11 +23,11 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
 - Execute 'Rails s' e acesse pelo browser localhost:3000 e veja o index da API ou faça uma chamada ao endpoint:
  localhost:3000/customers passando os parâmetros no body da chamada.
  
-- Veja exemplos de chamadas no aquivo sample/initializers_to_teste.txt, neste aquivo você encontrará os parâmetros necessários para cada tipo de operação.
+- Veja exemplos de chamadas no arquivo sample/initializers_to_teste.txt, aqui você encontrará os parâmetros necessários para cada tipo de operação.
  
 - Todas as operações seguem o que está documentado em https://docs.mundipagg.com/reference
 
-- Para acessar sua Secret_test_api faça login em https://id.mundipagg.com/signin, selecione 'Ir para o modo de teste', depois no menu 'Conta' -> 'Configurações -> 'Chaves' - aqui você enontrará suas api_keys('chaves').
+- Para acessar sua Secret_test_api faça login em https://id.mundipagg.com/signin, selecione 'Ir para o modo de teste', depois no menu 'Conta' -> 'Configurações -> 'Chaves' - aqui você encontrará suas chaves('api_keys').
 
 - Você também pode chamar o arquivo sample/mundipagg.html para executar as chamadas. Neste caso primeiro edite o arquivo sample/script.js, remova o comentário e adicione sua Secret_test_key da mundipagg.
 
