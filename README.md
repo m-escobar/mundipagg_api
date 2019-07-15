@@ -43,10 +43,13 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
 
   objeto: define onde será realizada a operação, nem todas as funções foram implementadas, uma vez que isto é apenas um MVP.
   
-  list -> customer, card, subscription
-  create -> customer, card, address, product, subscription
-  update -> card
-  destroy -> card
+  - list -> customer, card, subscription
+  
+  - create -> customer, card, address, product, subscription
+  
+  - update -> card
+  
+  - destroy -> card
   
   A operação abaixo por exemplo, irá listar os cartões do cliente:
 
