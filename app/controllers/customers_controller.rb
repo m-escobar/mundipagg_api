@@ -5,12 +5,13 @@ class CustomersController < ApplicationController
   protect_from_forgery :except => [:main]
 
   def main
+    p = params
     o_return = {
       "body": {
         "error": "Parameters not informed"
       }
     }
-    render :json => o_return
+    render :json => params #o_return
   end
 
   def jmain
