@@ -1,55 +1,33 @@
 class CustomersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-  # def main
-  #   p = params
-  #   o_return = {
-  #     "body": {
-  #       "error": "Parameters not informed"
-  #     }
-  #   }
-  #   render :json => params #o_return
-  # end
-
   def main
-    # temp = params
-    # hash = JSON.parse(temp, {:symbolize_names => true})
     hash = params
 
-    unless hash.nil?
+    unless hash[:operacao].nil?
       unless hash[:operacao][:tipo].nil? then
         @api_key = hash[:operacao][:api_key]
         login
-        case hash[:operacao][:tipo]
-          when "list"
-            op_list(hash)
-          when "create"
-            op_create(hash)
-          when  "update"
-            op_update(hash)
-          when "destroy"
-            op_destroy(hash)
-          else to_return = {"error": "Invalid Operation"}
-        end
+          case hash[:operacao][:tipo]
+            when "list"
+              op_list(hash)
+            when "create"
+              op_create(hash)
+            when  "update"
+              op_update(hash)
+            when "destroy"
+              op_destroy(hash)
+            else to_return = { "message": "Invalid Operation" }
+          end
       else 
-        to_return = {"error": "Undefined Operation"}
+        to_return = { "message": "Undefined Operation" }
       end
     else
-      to_return = '{
-        "header": {
-          "Access-Control-Allow-Origin": *
-        },
-        "body": {
-          "error": "Parameters not informed"
-        }
-      }'
-
+      to_return = { "message": "Parameters not informed" }
     end
     
-
-
-    if to_return.nil? 
-      to_return = { "requested operation": hash[:operacao][:tipo] }
+    if to_return.nil?
+      to_return = {"message": "resp", "requested operation": hash[:operacao][:tipo]}
       to_return.merge!(@error) unless @error.nil?
       to_return.merge!(@list) unless @list.nil?
       to_return.merge!(@destroy) unless @destroy.nil?
@@ -64,7 +42,7 @@ class CustomersController < ApplicationController
     render :json => json_to_return
   end
 
-private  
+private
   def op_list(op)
     #list customer
     if op[:operacao][:objeto] == "customer" then
@@ -275,12 +253,13 @@ private
       #To be used online getting Secret_key from Json
       basic_auth_user_name = (@api_key)
     end
-      basic_auth_password = '' # The password to use with basic authentication
+    basic_auth_password = '' # The password to use with basic authentication
 
     client = MundiApi::MundiApiClient.new(
       basic_auth_user_name: basic_auth_user_name,
       basic_auth_password: basic_auth_password
     )
+    
     @customers_controller = client.customers
     @subscriptions_controller = client.subscriptions
     @plans_controller = client.plans
