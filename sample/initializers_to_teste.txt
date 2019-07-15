@@ -6,13 +6,10 @@
             }
           }
 
-#list 
+#list card 
 @json =  { "operacao": {
               "tipo": "list",
-              "objeto": "subscription"
-            },
-            "assinatura": {
-              "assinatura_id": "sub_VdWEX2OCpfAGN32k",
+              "objeto": "card"
             },
             "cliente": {
               "cliente_id": "cus_wpjEBoBfGktyp3qB"
