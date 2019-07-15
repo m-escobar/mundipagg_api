@@ -36,10 +36,11 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
   operacao: {
       tipo: 'list',
       objeto: 'customer',
-      api_key: 'sk_test_Your_Secret_Key' 
+      api_key: 'sk_test_Your_Secret_Key'
     }
   
   tipo: define o tipo da operação -> list, create, update, destroy
+
   objeto: define onde será realizada a operação, nem todas as funções foram implementadas, uma vez que isto é apenas um MVP.
   
   list -> customer, card, subscription
