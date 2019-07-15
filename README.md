@@ -27,7 +27,7 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
  
 - Todas as operações seguem o que está documentado em https://docs.mundipagg.com/reference
 
-- Para acessar sua Secret_test_api faça login em https://id.mundipagg.com/signin, selecione 'Ir para o modo de teste', depois no menu 'Conta' -> 'Configurações -> 'Chaves' - aqui você encontrará suas chaves('api_keys').
+- Para acessar sua Secret_test_key faça login em https://id.mundipagg.com/signin, selecione 'Ir para o modo de teste', depois no menu 'Conta' -> 'Configurações -> 'Chaves' - aqui você encontrará suas chaves('api_keys').
 
 - Você também pode chamar o arquivo sample/mundipagg.html para executar as chamadas. Neste caso primeiro edite o arquivo sample/script.js, remova o comentário e adicione sua Secret_test_key da mundipagg.
 
