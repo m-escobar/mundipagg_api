@@ -1,4 +1,5 @@
 let url = 'http://localhost:3000/customers';
+// let url = 'https://mundipagg-api.herokuapp.com/customers';
 
 fetch(url, {
   method: 'POST',
