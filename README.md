@@ -13,6 +13,7 @@ Endpoint
 O endpoint está no heroku e pode ser acessado pelo link abaixo. Veja os parâmetros para chamada mais abaixo em instruções.
 https://mundipagg-api.herokuapp.com/customers
 
+**As chamadas a API devem ser feitas pelo método 'POST'**
 
 
 Ruby on Rails
