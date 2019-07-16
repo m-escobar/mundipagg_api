@@ -4,6 +4,21 @@ Este é um teste do SDK do MundiPagg (meio de pagamento), desenvolvido em Ruby o
 
 Através desta API você poderá testar algumas funcionalidades do MundiPagg, veja abaixo as instruções para uso.
 
+Você pode testar de duas formas, rodando o server em Ruby on Rails ou acessando o endpoint da api.
+
+Endpoint
+--------
+
+
+O endpoint está no heroku e pode ser acessado pelo link abaixo. Veja os parâmetros para chamada mais abaixo em instruções.
+https://mundipagg-api.herokuapp.com/customers
+
+
+
+Ruby on Rails
+-------------
+Para subir o código em um servidor Ruby on Rails siga as instruções abaixo:
+
 1 - Preparando o server do Ruby on Rails.
 
 - Preparação (considerando que você já possui o Ruby instalado):  
@@ -17,12 +32,14 @@ Através desta API você poderá testar algumas funcionalidades do MundiPagg, ve
     Mundi_API = "Your_Secret_test_Key_from_mundipagg"
 
 - Caso esteja rodando na aws, heroku, etc configure a secret_key como:
-  key = Mundi_API
-  value = Your_Secret_test_Key_from_mundipagg
+  key = Mundi_API e value = Your_Secret_test_Key_from_mundipagg
 
 - Execute 'Rails s' e acesse pelo browser localhost:3000 e veja o index da API ou faça uma chamada ao endpoint:
  localhost:3000/customers passando os parâmetros no body da chamada.
  
+Instruções para chamar a endpoint
+---------------------------------
+
 - Veja exemplos de chamadas no arquivo sample/initializers_to_test.txt, aqui você encontrará os parâmetros necessários para cada tipo de operação.
  
 - Todas as operações seguem o que está documentado em https://docs.mundipagg.com/reference
