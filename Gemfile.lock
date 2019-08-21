@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/m-escobar/mundipagg_ruby-gem.git
-  revision: 1c233fc7cc08d6b972aca2490455b0a4716f5403
-  branch: master
-  specs:
-    mundi_api (0.15.1)
-      certifi (~> 2016.9, >= 2016.09.26)
-      faraday (~> 0.10.0)
-      faraday-http-cache (~> 1.2, >= 1.2.2)
-      faraday_middleware (~> 0.13.1)
-      logging (~> 2.0)
-      test-unit (~> 3.1.5)
 
 GEM
   remote: https://rubygems.org/
